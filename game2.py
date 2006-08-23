@@ -54,18 +54,16 @@ def play(game, player1, player2, verbose = True):
 
     score = game.score()
     if score > 0:
-        winner = game.player
         print "player "+str(next)+" won with score", score
     elif score < 0:
-        winner = -1 * game.player
         print "player "+str(3-next)+" won with score", -1*score
     else:
         winner = 0
         print "DRAW!!"
 
     temp = game.copy()
-    player1.gameover(temp, last_move, winner)
-    player2.gameover(temp, last_move, winner)
+    player1.gameover(temp, last_move)
+    player2.gameover(temp, last_move)
 
     if player1_ply and player2_ply:
         print "%d ply: Player 1 %.1f s per ply. Player2 %.1f s per ply" % (
@@ -97,7 +95,7 @@ class player:
     def play(self, game, opp_move):
         return self.play_fn(game)
 
-    def gameover(self, game, last_move, winner):
+    def gameover(self, game, last_move):
         pass
     
 if __name__ == "__main__":

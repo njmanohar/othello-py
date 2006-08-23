@@ -1,4 +1,22 @@
-# Othello GUI
+#    othello_gui: a GUI based interface to get the user's move
+#    Copyright (C) 2006  Nimar S. Arora
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License along
+#    with this program; if not, write to the Free Software Foundation, Inc.,
+#    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+#    nimar.arora@gmail.com
+    
 import Tkinter
 import time
 
@@ -109,7 +127,7 @@ class player:
             # grab the focus to ask the user for a move
             self.draw_board(game, last_move)
             self.canvas.focus_force()
-            self.root.configure(cursor="dot")
+            self.root.configure(cursor="target")
             while (not self.move_played) and self.alive:
                 self.root.update()
                 time.sleep(0.1)
@@ -128,7 +146,7 @@ class player:
             self.root.configure(cursor="watch")
             self.root.update()
             # give a pause so I can see my move
-            time.sleep(1)
+            time.sleep(.1)
             return (0, self.move)
             
         # if the user has quit the GUI then the game has to terminate,
@@ -136,11 +154,12 @@ class player:
         else:
             return None
 
-    def gameover(self, game, last_move, winner):
+    def gameover(self, game, last_move):
 
-        if winner == 1:
+        score = game.score() * game.player
+        if score > 0:
             win_text = "White Won"
-        elif winner == -1:
+        elif score < 0:
             win_text = "Black Won"
         else:
             win_text = "Draw"
@@ -159,6 +178,11 @@ class player:
     
 if __name__ == "__main__":
 
+    print """othello_gui, Copyright (C) 2006 Nimar S. Arora
+othello_gui comes with ABSOLUTELY NO WARRANTY.
+This is free software, and you are welcome to redistribute it
+under certain conditions."""
+    
     game2.play(othello.game(),
                game2.player(lambda x: minimax.alphabeta(x, 4, othello.edge_eval)),
                player(), True)
