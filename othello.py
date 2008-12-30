@@ -235,11 +235,21 @@ def edge_eval(game):
             # any piece gets a value of 1
             # an edge piece gets a value of 6
             # a corner piece gets a value of 11
+            # subtract 10 for the four diagonal square near the corners
+            # subtract 5 for the rows and cols near the edge
+            # TODO: only charge the penalty when the edge or corner is not
+            # occupied
             delta = 1 
             if i == 0 or i == size_m:
                 delta += 5
             if j == 0 or j == size_m:
                 delta += 5
+            # penalty for putting a piece close to the edge
+            if i == 1 or i == (size_m -1):
+                delta -= 5
+            if j == 1 or j == (size_m -1):
+                delta -=5
+            
             if game.board[i][j] == game.player:
                 score += delta
             elif game.board[i][j] == opp:
