@@ -35,7 +35,7 @@ class game:
         self.board[tuple[0]][tuple[1]] = playernum
 
     def __init__(self, old_game = None):
-        """Initiallize a new game of othello, optionally from an
+        """Initialize a new game of othello, optionally from an
         existing game."""
         if old_game is None:
             # initially an 8 by 8 square

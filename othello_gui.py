@@ -23,6 +23,7 @@ import time
 import othello
 import game2
 import minimax
+import naive_random
 
 BOXWIDTH=80
 BOXHEIGHT=80
@@ -183,6 +184,9 @@ othello_gui comes with ABSOLUTELY NO WARRANTY.
 This is free software, and you are welcome to redistribute it
 under certain conditions."""
     
+    # game2.play(othello.game(),
+    #          game2.player(lambda x: minimax.alphabeta(x, 4, othello.edge_eval)),
+#          player(), True)
     game2.play(othello.game(),
-               game2.player(lambda x: minimax.alphabeta(x, 4, othello.edge_eval)),
-               player(), True)
+           game2.player(lambda x: naive_random.naive_random(x)),
+           player(), True)
