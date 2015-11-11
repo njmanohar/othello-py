@@ -101,6 +101,8 @@ class player:
 if __name__ == "__main__":
     import othello
     import minimax
+    import naive_greedy
+    import naive_random
 
 
     # Experiment 1:
@@ -127,5 +129,10 @@ if __name__ == "__main__":
     # player 1 0.0 s per ply player 2 0.1 s per ply
     play(othello.game(), player(lambda x: minimax.alphabeta(x, 2, othello.edge_eval)),
          player(lambda x: minimax.alphabeta(x, 3)), False)
+
+
+    # Experiment 3
+    # player 1 alpha beta with 0.1 s per ply, player 2 is naive_greedy
+    play(othello.game(), player(lambda x: minimax.alphabeta(x,3)), player(lambda x: naive_greedy.naive_greedy(x)), False)
 
 
