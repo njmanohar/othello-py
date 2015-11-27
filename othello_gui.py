@@ -25,6 +25,7 @@ import game2
 import minimax
 import naive_random
 import naive_greedy
+import monte_carlo
 
 BOXWIDTH=80
 BOXHEIGHT=80
@@ -189,4 +190,4 @@ under certain conditions."""
     #          game2.player(lambda x: minimax.alphabeta(x, 4, othello.edge_eval)),
 #          player(), True)
     game2.play(othello.game(),
-               game2.player(lambda x: minimax.alphabeta(x,5, othello.edge_eval)),  game2.player(lambda x: minimax.alphabeta(x,5,othello.mobility_eval)), True)
+               game2.player(lambda x: naive_greedy.naive_greedy(x)),  game2.player(lambda x: monte_carlo.monte_carlo(x,200)), True)
