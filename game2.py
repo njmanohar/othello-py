@@ -109,7 +109,7 @@ if __name__ == "__main__":
     # Player 1 and Player 2 are evenly matched with 3-ply deep search
     # player 2 wins with a final score of 28
     # player 1 0.2 s per ply player 2 0.4 s per ply
-    play(othello.game(), player(lambda x: minimax.minimax(x, 3)),
+    play(othello.game(), player(lambda x: minimax.alphabeta(x, 4, othello.positional_eval)),
          player(lambda x: minimax.minimax(x, 3)), False)
     
     # Experiment 2:
@@ -117,22 +117,22 @@ if __name__ == "__main__":
     # we weaken player1 to 2 ply deep but use the edge eval fun
     # player 1 now beats player 2 with a score of 58!
     # player 1 0.1 s per ply player 2 0.4 s per ply
-    play(othello.game(), player(lambda x: minimax.minimax(x, 2, othello.edge_eval)),
-         player(lambda x: minimax.minimax(x, 3)), False)
+    play(othello.game(), player(lambda x: minimax.alphabeta(x, 4, othello.positional_eval)),
+         player(lambda x: naive_random.naive_random(x)), False)
 
     # Experiment 1 (with alpha-beta):
     # player 1 0.1 s per ply, player 2 0.1 s per ply
-    play(othello.game(), player(lambda x: minimax.alphabeta(x, 3)),
+    play(othello.game(), player(lambda x: minimax.alphabeta(x, 4, othello.positional_eval)),
          player(lambda x: minimax.alphabeta(x, 3)), False)
 
     # Experiment 2 (with alpha-beta):
     # player 1 0.0 s per ply player 2 0.1 s per ply
-    play(othello.game(), player(lambda x: minimax.alphabeta(x, 2, othello.edge_eval)),
-         player(lambda x: minimax.alphabeta(x, 3)), False)
+    play(othello.game(), player(lambda x: minimax.alphabeta(x, 4, othello.positional_eval)),
+         player(lambda x: minimax.alphabeta(x, 4, othello.edge_eval)), False)
 
 
     # Experiment 3
     # player 1 alpha beta with 0.1 s per ply, player 2 is naive_greedy
-    play(othello.game(), player(lambda x: minimax.alphabeta(x,3)), player(lambda x: naive_greedy.naive_greedy(x)), False)
+    play(othello.game(), player(lambda x: minimax.alphabeta(x,4, othello.positional_eval)), player(lambda x: naive_greedy.naive_greedy(x)), False)
 
 

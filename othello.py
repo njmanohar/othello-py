@@ -46,7 +46,7 @@ class game:
             self.board[4][4] = 1
             self.board[3][4] = -1
             self.board[4][3] = -1
-            # its white's move
+            # its black's move
             self.player = -1
         else:
             # copy all the pieces from the old game
@@ -257,3 +257,72 @@ def edge_eval(game):
 
     return score
 
+def positional_eval(game):
+    """An evaluation function for the positional player"""
+    position_values = [[100, -20, 10, 5, 5, 10, -20, 100],
+                       [-20, -50, -2, -2, -2, -2, -50, -20],
+                       [10, -2, -1, -1, -1, -1, -2, 10],
+                       [5, -2, -1, -1, -1, -1, -2, 5],
+                       [5, -2, -1, -1, -1, -1, -2, 5],
+                       [10, -2, -1, -1, -1, -1, -2, 10],
+                       [-20, -50, -2, -2, -2, -2, -50, -20],
+                       [100, -20, 10, 5, 5, 10, -20, 100]]
+    
+    score = 0
+    num_occupied = size * size
+    for i in range_size:
+        for j in range_size:
+            if game.board[i][j] == 0:
+                num_occupied = num_occupied - 1
+                    
+    if num_occupied <= 0.8 * size * size:
+        for i in range_size:
+            for j in range_size:
+                score += position_values[i][j] * game.board[i][j]
+
+    else:
+        for i in range_size:
+            for j in range_size:
+                score += game.board[i][j]
+
+    # multiply by -1 if current player is black
+    if game.player == -1:
+        score *= -1
+    return score
+
+def mobility_eval(game):
+    """An evaluation function for the mobility player"""
+
+    score = 0
+    num_occupied = size * size
+    for i in range_size:
+        for j in range_size:
+            if game.board[i][j] == 0:
+                num_occupied = num_occupied - 1
+    
+    if num_occupied <= 0.8 * size * size:
+        # count corners
+        corn_diff = game.board[0][0] + game.board[0][size-1] + game.board[size-1][0] + game.board[size-1][size-1]
+        if game.player == -1: # if current player is black
+            corn_diff *= -1
+        
+        mobility_player = len(game.generate_moves())
+        game.player *= -1 # change to opponent to calculate mobility
+        mobility_opponent = len(game.generate_moves())
+        game.player *= -1 # change back to original player
+        
+        w1 = 10
+        w2 = 1
+        if mobility_player + mobility_opponent == 0:
+            score = w1*corn_diff
+        else:
+            score = w1*corn_diff + w2*((mobility_player - mobility_opponent)/(mobility_player + mobility_opponent))
+    else:
+        for i in range_size:
+            for j in range_size:
+                score += game.board[i][j]
+        # multiply by -1 if current player is black
+        if game.player == -1:
+            score *= -1
+
+    return score
