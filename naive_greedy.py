@@ -17,4 +17,4 @@ def naive_greedy(game):
             bestMoves = [move]
         elif newScore == bestScore:
             bestMoves.append(move)
-    return (bestScore ,random.choice(bestMoves))
+    return (bestScore, random.choice(bestMoves))
