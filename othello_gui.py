@@ -190,4 +190,4 @@ under certain conditions."""
     #          game2.player(lambda x: minimax.alphabeta(x, 4, othello.edge_eval)),
 #          player(), True)
     game2.play(othello.game(),
-               game2.player(lambda x: naive_greedy.naive_greedy(x)),  game2.player(lambda x: monte_carlo.monte_carlo(x,200)), True)
+               game2.player(lambda x: minimax.alphabeta(x, 7, othello.mobility_eval)),  game2.player(lambda x: minimax.alphabeta(x,7, othello.mobility_eval)), True)
