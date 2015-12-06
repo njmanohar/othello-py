@@ -107,13 +107,98 @@ if __name__ == "__main__":
 
     # Learning phase
     qlearn = qlearning.QLearning()
-    numTrials = 100
+
+    numTrials = 1000
     for trial in range(numTrials):
-        print "Playing game ", trial
-        play(othello.game(), player(lambda x: minimax.alphabeta(x, 4, othello.positional_eval)),
-            player(lambda x: qlearn.run(x, trial)), False)
+        if numTrials % 2 == 0:
+            print "Playing game vs positional as white ", trial
+            play(othello.game(), player(lambda x: minimax.alphabeta(x, 3, othello.positional_eval)),
+                player(lambda x: qlearn.run(x, trial)), False)
+        else:
+            print "Playing game vs positional as black ", trial
+            play(othello.game(), player(lambda x: qlearn.run(x, trial)), 
+                player(lambda x: minimax.alphabeta(x, 3, othello.positional_eval)), False)
+
+    numTrials = 9999999999
+    print "naive random as white"
     play(othello.game(), player(lambda x: naive_random.naive_random(x)),
-        player(lambda x: qlearn.run(x, trial)), True)
+        player(lambda x: qlearn.run(x, numTrials)), False)
+    print "naive greedy as white"
+    play(othello.game(), player(lambda x: naive_greedy.naive_greedy(x)),
+        player(lambda x: qlearn.run(x, numTrials + 1)), False)
+    print "positional as white"
+    play(othello.game(), player(lambda x: minimax.alphabeta(x, 3, othello.positional_eval)),
+        player(lambda x: qlearn.run(x, numTrials + 2)), False)
+    print "mobility as white"
+    play(othello.game(), player(lambda x: minimax.alphabeta(x, 3, othello.mobility_eval)),
+        player(lambda x: qlearn.run(x, numTrials + 3)), False)
+    print "edge as white"
+    play(othello.game(), player(lambda x: minimax.alphabeta(x, 3, othello.edge_eval)),
+        player(lambda x: qlearn.run(x, numTrials + 4)), False)
+    print "naive random as black"
+    play(othello.game(), player(lambda x: qlearn.run(x, numTrials + 5)), 
+        player(lambda x: naive_random.naive_random(x)), False)
+    print "naive greedy as black"
+    play(othello.game(), player(lambda x: qlearn.run(x, numTrials + 6)), 
+        player(lambda x: naive_greedy.naive_greedy(x)), False)
+    print "positional as black"
+    play(othello.game(), player(lambda x: qlearn.run(x, numTrials + 7)), 
+        player(lambda x: minimax.alphabeta(x, 3, othello.positional_eval)), False)
+    print "mobility as black"
+    play(othello.game(), player(lambda x: qlearn.run(x, numTrials + 8)), 
+        player(lambda x: minimax.alphabeta(x, 3, othello.mobility_eval)), False)
+    print "edge as black"
+    play(othello.game(), player(lambda x: qlearn.run(x, numTrials + 9)), 
+        player(lambda x: minimax.alphabeta(x, 3, othello.edge_eval)), False)
+
+    # numTrials = 500
+    # for trial in range(numTrials/2):
+    #     print "Playing game vs positional as white ", trial
+    #     play(othello.game(), player(lambda x: minimax.alphabeta(x, 4, othello.positional_eval)),
+    #         player(lambda x: qlearn.run(x, trial)), False)
+    # for trial in range(numTrials/2):
+    #     print "Playing game vs mobility as white", trial
+    #     play(othello.game(), player(lambda x: minimax.alphabeta(x, 4, othello.mobility_eval)),
+    #         player(lambda x: qlearn.run(x, trial + (numTrials/2))), False)
+    # for trial in range(numTrials/2):
+    #     print "Playing game vs positional as black", trial
+    #     play(othello.game(), player(lambda x: qlearn.run(x, trial + numTrials)), 
+    #         player(lambda x: minimax.alphabeta(x, 4, othello.positional_eval)), False)
+    # for trial in range(numTrials/2):
+    #     print "Playing game vs mobility as black", trial
+    #     play(othello.game(), player(lambda x: qlearn.run(x, trial + ((3 * numTrials)/2))), 
+    #         player(lambda x: minimax.alphabeta(x, 4, othello.mobility_eval)), False)
+
+    # print "naive random as white"
+    # play(othello.game(), player(lambda x: naive_random.naive_random(x)),
+    #     player(lambda x: qlearn.run(x, (2 * numTrials))), False)
+    # print "naive greedy as white"
+    # play(othello.game(), player(lambda x: naive_greedy.naive_greedy(x)),
+    #     player(lambda x: qlearn.run(x, (2 * numTrials) + 1)), False)
+    # print "positional as white"
+    # play(othello.game(), player(lambda x: minimax.alphabeta(x, 4, othello.positional_eval)),
+    #     player(lambda x: qlearn.run(x, (2 * numTrials) + 2)), False)
+    # print "mobility as white"
+    # play(othello.game(), player(lambda x: minimax.alphabeta(x, 4, othello.mobility_eval)),
+    #     player(lambda x: qlearn.run(x, (2 * numTrials) + 3)), False)
+    # print "edge as white"
+    # play(othello.game(), player(lambda x: minimax.alphabeta(x, 4, othello.edge_eval)),
+    #     player(lambda x: qlearn.run(x, (2 * numTrials) + 4)), False)
+    # print "naive random as black"
+    # play(othello.game(), player(lambda x: qlearn.run(x, (2 * numTrials) + 5)), 
+    #     player(lambda x: naive_random.naive_random(x)), False)
+    # print "naive greedy as black"
+    # play(othello.game(), player(lambda x: qlearn.run(x, (2 * numTrials) + 6)), 
+    #     player(lambda x: naive_greedy.naive_greedy(x)), False)
+    # print "positional as black"
+    # play(othello.game(), player(lambda x: qlearn.run(x, (2 * numTrials) + 7)), 
+    #     player(lambda x: minimax.alphabeta(x, 4, othello.positional_eval)), False)
+    # print "mobility as black"
+    # play(othello.game(), player(lambda x: qlearn.run(x, (2 * numTrials) + 8)), 
+    #     player(lambda x: minimax.alphabeta(x, 4, othello.mobility_eval)), False)
+    # print "edge as black"
+    # play(othello.game(), player(lambda x: qlearn.run(x, (2 * numTrials) + 9)), 
+    #     player(lambda x: minimax.alphabeta(x, 4, othello.edge_eval)), False)
 
     # # Experiment 1:
     # # Player 1 and Player 2 are evenly matched with 3-ply deep search

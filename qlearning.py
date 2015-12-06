@@ -121,22 +121,56 @@ class QLearning():
 		return self.computeValueFromQValues(game)
 
 	def run(self, game, numPlayed):
+		threshold = 60
 		game_copy = game.copy()
 		action = self.getAction(game_copy, numPlayed)
 		game_copy.play_move(action)
-		if game_copy.terminal_test():
-			score = 0
-			for i in range(8):
-				for j in range(8):
-					score += game_copy.board[i][j]
+		num_occupied = 0
+		for i in range(8):
+			for j in range(8):
+				if game_copy.board[i][j] != 0:
+					num_occupied = num_occupied + 1
 
-			if score * game.player < 0: #player lost
-				self.update(game, action, game_copy, -1)
-			elif score * game.player > 0: #player won
-				self.update(game, action, game_copy, 1)
-			else: #draw
-				self.update(game, action, game_copy, 0)
+		if num_occupied >= threshold:
+			if game_copy.terminal_test():
+				score = 0
+				for i in range(8):
+					for j in range(8):
+						score += game_copy.board[i][j]
+
+				if score * game.player < 0: #player lost
+					self.update(game, action, game_copy, -1)
+				elif score * game.player > 0: #player won
+					self.update(game, action, game_copy, 1)
+				else: #draw
+					self.update(game, action, game_copy, 0)
+			else:
+				updated = 0
+				opp_moves = game_copy.generate_moves()
+				for move in opp_moves:
+					if updated == 0:
+						new_game = game_copy.copy()
+						new_game.play_move(move)
+						if new_game.terminal_test():
+							score = 0
+							for i in range(8):
+								for j in range(8):
+									score += game_copy.board[i][j]
+
+							if score * game_copy.player < 0: #opponent lost
+								self.update(game, action, game_copy, 1)
+								updated = 1
+								break
+							elif score * game_copy.player > 0: #opponent won
+								self.update(game, action, game_copy, -1)
+								updated = 1
+								break
+
+				if updated == 0:
+					self.update(game, action, game_copy, 0)
 		else:
 			self.update(game, action, game_copy, 0)
+				
+
 
 		return (0, action)
