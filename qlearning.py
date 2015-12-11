@@ -131,10 +131,10 @@ class QLearning():
 				if game_copy.board[i][j] != 0:
 					num_occupied = num_occupied + 1
 
-		if num_occupied >= threshold:
-			if game_copy.terminal_test():
+        if num_occupied >= threshold:
+            if game_copy.terminal_test():
 				score = 0
-				for i in range(8):
+                for i in range(8):
 					for j in range(8):
 						score += game_copy.board[i][j]
 
@@ -144,22 +144,22 @@ class QLearning():
 					self.update(game, action, game_copy, 1)
 				else: #draw
 					self.update(game, action, game_copy, 0)
-			else:
-				updated = 0
-				opp_moves = game_copy.generate_moves()
+            else:
+                updated = 0
+                opp_moves = game_copy.generate_moves()
                 num_lost = 0
                 num_moves = len(opp_moves)
-				for move in opp_moves:
+                for move in opp_moves:
 					if updated == 0:
 						new_game = game_copy.copy()
 						new_game.play_move(move)
 						if new_game.terminal_test():
 							score = 0
-							for i in range(8):
+                            for i in range(8):
 								for j in range(8):
 									score += game_copy.board[i][j]
 
-							if score * game_copy.player < 0: #opponent lost
+                            if score * game_copy.player < 0: #opponent lost
                                 num_lost++
                                 if num_lost == num_moves:
                                     self.update(game, action, game_copy, 1)
