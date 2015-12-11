@@ -1,13 +1,13 @@
-#qlearning.py
-#Implementation of the Q Learning Agent
+# qlearning.py
+# Implementation of the Q Learning Agent
 import random, util, math, sys
 
 class QLearning():
 
 	def __init__(self):
 		self.values = util.Counter()
-        #values set for the (a,b,c) vector for the temperature that controls exploration
-        #gamma = 1, so no discount factor, and a learning rate of 0.1
+        # values set for the (a,b,c) vector for the temperature that controls exploration
+        # gamma = 1, so no discount factor, and a learning rate of 0.1
 		self.alpha = 0.1
 		self.gamma = 1
 		self.temp_a = 1
@@ -30,9 +30,8 @@ class QLearning():
 		  there are no legal actions, which is the case at the
 		  terminal state, you should return a value of 0.0.
 		"""
-		"*** YOUR CODE HERE ***"
 
-        #simply return the q-value of the best action if one exists; otherwise return 0.0
+        # simply return the q-value of the best action if one exists; otherwise return 0.0
 		best_action = self.computeActionFromQValues(game)
 		if best_action == None:
 			return 0.0
@@ -46,7 +45,6 @@ class QLearning():
 		  are no legal actions, which is the case at the terminal state,
 		  you should return None.
 		"""
-		"*** YOUR CODE HERE ***"
 		actions = game.generate_moves()
 
 		if len(actions) == 0:
@@ -67,14 +65,8 @@ class QLearning():
 
 	def getAction(self, game, numPlayed):
 		"""
-		  Compute the action to take in the current state.  With
-		  probability self.epsilon, we should take a random action and
-		  take the best policy action otherwise.  Note that if there are
-		  no legal actions, which is the case at the terminal state, you
-		  should choose None as the action.
-
-		  HINT: You might want to use util.flipCoin(prob)
-		  HINT: To pick randomly from a list, use random.choice(list)
+		  Compute the action to take in the current state. 
+		  Follows temperature scheduled annealing based on paper.
 		"""
 
 		actions = game.generate_moves()
@@ -86,7 +78,7 @@ class QLearning():
 
 		prob_actions = {}
 
-        #use temperature according to explanation in writeup to select whether or not to explore
+        # use temperature according to explanation in writeup to select whether or not to explore
 		if self.temp_a * (self.temp_b ** numPlayed) >= self.temp_c:
 			temperature = self.temp_a * (self.temp_b ** numPlayed)
 			for _action in actions:
@@ -109,25 +101,18 @@ class QLearning():
 		"""
 		  The parent class calls this to observe a
 		  state = action => nextState and reward transition.
-		  You should do your Q-Value update here
-
-		  NOTE: You should never call this function,
-		  it will be called on your behalf
+		  Updates Q-value
 		"""
-		"*** YOUR CODE HERE ***"
 		# update Q-values according to equation
 		game_board = tuple(tuple(x) for x in game.board)
 		self.values[(game_board, action)] = self.getQValue(game, action) + \
 		        self.alpha * (reward + (self.gamma * self.computeValueFromQValues(nextGame)) - self.getQValue(game, action))
 
-    # def getPolicy(self, game):
-    #     return self.getAction(game)
-
 	def getValue(self, game):
 		return self.computeValueFromQValues(game)
 
 	def run(self, game, numPlayed):
-        #threshold is # of occupied squares when we start checking for terminal states
+        # threshold is # of occupied squares when we start checking for terminal states
 		threshold = 60
 		game_copy = game.copy()
 		action = self.getAction(game_copy, numPlayed)
@@ -138,7 +123,7 @@ class QLearning():
 				if game_copy.board[i][j] != 0:
 					num_occupied = num_occupied + 1
 
-        #check for terminal states
+        # check for terminal states
 		if num_occupied >= threshold:
 			if game_copy.terminal_test():
 				score = 0
@@ -146,11 +131,11 @@ class QLearning():
 					for j in range(8):
 						score += game_copy.board[i][j]
 
-				if score * game.player < 0: #player lost
+				if score * game.player < 0: # player lost
 					self.update(game, action, game_copy, -1)
-				elif score * game.player > 0: #player won
+				elif score * game.player > 0: # player won
 					self.update(game, action, game_copy, 1)
-				else: #draw
+				else: # draw
 					self.update(game, action, game_copy, 0)
 			else:
 				updated = 0
@@ -169,12 +154,12 @@ class QLearning():
 
 							if score * game_copy.player < 0: #opponent lost
 								num_lost = num_lost + 1
-                                #if every opponent move results in a win for us
+                                # if every opponent move results in a win for us
 								if num_lost == num_moves:
 									self.update(game, action, game_copy, 1)
 									updated = 1
 									break
-                            #if the opponent can win the game
+                            # if the opponent can win the game
 							elif score * game_copy.player > 0: #opponent won
 								self.update(game, action, game_copy, -1)
 								updated = 1
@@ -184,7 +169,5 @@ class QLearning():
 					self.update(game, action, game_copy, 0)
 		else:
 			self.update(game, action, game_copy, 0)
-				
-
 
 		return (0, action)

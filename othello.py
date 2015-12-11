@@ -217,8 +217,7 @@ class game:
         return ret
 
 def edge_eval(game):
-    """A better evaluation function which gives more preference to squares
-    on the edge of the board and on the corners."""
+    """This is an evaluation function implemented by the original author."""
 
     # if the game is over, give a 1000 point bonus to the winning player
     if game.terminal_test():
@@ -239,8 +238,6 @@ def edge_eval(game):
             # a corner piece gets a value of 11
             # subtract 10 for the four diagonal square near the corners
             # subtract 5 for the rows and cols near the edge
-            # TODO: only charge the penalty when the edge or corner is not
-            # occupied
             delta = 1 
             if i == 0 or i == size_m:
                 delta += 5
