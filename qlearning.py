@@ -160,7 +160,7 @@ class QLearning():
 									score += game_copy.board[i][j]
 
 							if score * game_copy.player < 0: #opponent lost
-								num_lost++
+								num_lost = num_lost + 1
 								if num_lost == num_moves:
 									self.update(game, action, game_copy, 1)
 									updated = 1
