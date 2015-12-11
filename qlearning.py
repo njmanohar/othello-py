@@ -147,6 +147,8 @@ class QLearning():
 			else:
 				updated = 0
 				opp_moves = game_copy.generate_moves()
+                num_lost = 0
+                num_moves = len(opp_moves)
 				for move in opp_moves:
 					if updated == 0:
 						new_game = game_copy.copy()
@@ -158,9 +160,11 @@ class QLearning():
 									score += game_copy.board[i][j]
 
 							if score * game_copy.player < 0: #opponent lost
-								self.update(game, action, game_copy, 1)
-								updated = 1
-								break
+                                num_lost++
+                                if num_lost == num_moves:
+                                    self.update(game, action, game_copy, 1)
+                                    updated = 1
+                                    break
 							elif score * game_copy.player > 0: #opponent won
 								self.update(game, action, game_copy, -1)
 								updated = 1
