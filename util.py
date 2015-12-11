@@ -11,6 +11,8 @@
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
+#util file from the Pacman assignment; this was used to help with Q-learning
+
 
 import sys
 import inspect

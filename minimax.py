@@ -1,4 +1,5 @@
 # minimax:
+# we did not modify this file; this is simply an implementation of minimax with alpha-beta pruning that is essentially identical to the one in class
 
 def minimax_value(game, maxply, eval_fn = None):
     """Find the utility value of the game w.r.t. the current player."""

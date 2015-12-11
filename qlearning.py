@@ -1,9 +1,13 @@
+#qlearning.py
+#Implementation of the Q Learning Agent
 import random, util, math, sys
 
 class QLearning():
 
 	def __init__(self):
 		self.values = util.Counter()
+        #values set for the (a,b,c) vector for the temperature that controls exploration
+        #gamma = 1, so no discount factor, and a learning rate of 0.1
 		self.alpha = 0.1
 		self.gamma = 1
 		self.temp_a = 1
@@ -28,6 +32,7 @@ class QLearning():
 		"""
 		"*** YOUR CODE HERE ***"
 
+        #simply return the q-value of the best action if one exists; otherwise return 0.0
 		best_action = self.computeActionFromQValues(game)
 		if best_action == None:
 			return 0.0
@@ -81,6 +86,7 @@ class QLearning():
 
 		prob_actions = {}
 
+        #use temperature according to explanation in writeup to select whether or not to explore
 		if self.temp_a * (self.temp_b ** numPlayed) >= self.temp_c:
 			temperature = self.temp_a * (self.temp_b ** numPlayed)
 			for _action in actions:
@@ -121,6 +127,7 @@ class QLearning():
 		return self.computeValueFromQValues(game)
 
 	def run(self, game, numPlayed):
+        #threshold is # of occupied squares when we start checking for terminal states
 		threshold = 60
 		game_copy = game.copy()
 		action = self.getAction(game_copy, numPlayed)
@@ -131,6 +138,7 @@ class QLearning():
 				if game_copy.board[i][j] != 0:
 					num_occupied = num_occupied + 1
 
+        #check for terminal states
 		if num_occupied >= threshold:
 			if game_copy.terminal_test():
 				score = 0
@@ -161,10 +169,12 @@ class QLearning():
 
 							if score * game_copy.player < 0: #opponent lost
 								num_lost = num_lost + 1
+                                #if every opponent move results in a win for us
 								if num_lost == num_moves:
 									self.update(game, action, game_copy, 1)
 									updated = 1
 									break
+                            #if the opponent can win the game
 							elif score * game_copy.player > 0: #opponent won
 								self.update(game, action, game_copy, -1)
 								updated = 1

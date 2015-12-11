@@ -16,6 +16,10 @@
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 #    nimar.arora@gmail.com
+
+
+
+### We did not modify this file except to change the test case at the bottom
     
 import Tkinter
 import time
@@ -185,9 +189,6 @@ if __name__ == "__main__":
 othello_gui comes with ABSOLUTELY NO WARRANTY.
 This is free software, and you are welcome to redistribute it
 under certain conditions."""
-    
-    # game2.play(othello.game(),
-    #          game2.player(lambda x: minimax.alphabeta(x, 4, othello.edge_eval)),
-#          player(), True)
+
     game2.play(othello.game(), player(), game2.player(lambda x: minimax.alphabeta(x, 3, othello.positional_eval)), True)
 

@@ -8,6 +8,7 @@ def naive_greedy(game):
     validMoves = game.generate_moves()
     bestMoves = []
     bestScore = -(float("inf"))
+    #iterate through moves and check which one results in the highest score (most pieces of our color)
     for move in validMoves:
         newGame = game.copy()
         newGame.play_move(move)
@@ -17,4 +18,5 @@ def naive_greedy(game):
             bestMoves = [move]
         elif newScore == bestScore:
             bestMoves.append(move)
+    #if ties occur, randomly select from the list of tied moves
     return (bestScore, random.choice(bestMoves))

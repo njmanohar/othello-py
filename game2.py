@@ -1,4 +1,5 @@
 # game2: play a 2 person game
+# we did not modify this file except to put test cases at the end
 
 from time import time
 

@@ -1,4 +1,6 @@
 # othello
+# game class and edge evaluation function already existed
+# we implemented the positional and mobility evaluation functions
 
 # each side of the game board
 size = 8
@@ -259,6 +261,7 @@ def edge_eval(game):
 
 def positional_eval(game):
     """An evaluation function for the positional player"""
+    #assign weights to every square
     position_values = [[100, -20, 10, 5, 5, 10, -20, 100],
                        [-20, -50, -2, -2, -2, -2, -50, -20],
                        [10, -2, -1, -1, -1, -1, -2, 10],
@@ -274,12 +277,14 @@ def positional_eval(game):
         for j in range_size:
             if game.board[i][j] == 0:
                 num_occupied = num_occupied - 1
-                    
+
+    #if we're not in the end game, use our square weights
     if num_occupied <= 0.8 * size * size:
         for i in range_size:
             for j in range_size:
                 score += position_values[i][j] * game.board[i][j]
 
+    #otherwise, evaluate a board state by how many more squares we occupy
     else:
         for i in range_size:
             for j in range_size:
@@ -313,6 +318,7 @@ def mobility_eval(game):
         
         w1 = 10
         w2 = 1
+        #if nobody can move in current board state
         if mobility_player + mobility_opponent == 0:
             score = w1*corn_diff
         else:
